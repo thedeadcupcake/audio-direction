@@ -2,6 +2,8 @@ import pyaudio
 import numpy as np
 import wave
 
+from util import audio_slicer
+
 pya = pyaudio.PyAudio()
 
 CHUNK = 1024
@@ -23,8 +25,10 @@ def get_virtual_cable_index():
 
 
 def main():
+    audio_slicer.segment_log(20, 20000, 5)
+
     with wave.open("output.wav", "wb") as wf:
-        wf.setnchannels(CHANNELS)
+        wf.setnchannels(1)
         wf.setsampwidth(sampwidth=pyaudio.get_sample_size(format=FORMAT))
         wf.setframerate(RATE)
         
@@ -34,8 +38,11 @@ def main():
 
         for i in range((RATE//CHUNK) * RECORD_SECONDS):
             data = stream.read(CHUNK)
+            samples = np.frombuffer(data, dtype=np.int16)
 
-            wf.writeframes(data=data)
+            LR = audio_slicer.split_LR_channels(samples)
+            
+            wf.writeframes(data=LR[0])
     
 
         print("Finished")
@@ -43,7 +50,6 @@ def main():
         
         pya.terminate()
        
-
 
 if __name__ == "__main__":
     main()
