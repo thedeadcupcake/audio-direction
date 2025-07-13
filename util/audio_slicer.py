@@ -5,9 +5,6 @@ import aubio
 FREQ_MIN = 20
 FREQ_MAX = 20000
 
-CHUNK = None
-FORMAT = None
-RATE = None
 
 onset = aubio.onset("default", 2048, 1024, 44100)
 onset_L = aubio.onset("default", 1024, 512, 44100)
@@ -68,17 +65,6 @@ def has_onset(data: np.ndarray, type: str):
         return onset_obj.get_last_s()
     
     return False
-
-
-def has_tempo(data: np.ndarray):
-    print("asdf")
-
-
-
-def extract_frequencies(data, segments: int = 20):
-    data = data * np.hanning(len(data))
-    fft = abs(np.fft.fft(data).real)
-    freq = np.fft.fftfreq()
 
 
 def get_balance(left_amp: int, right_amp: int):

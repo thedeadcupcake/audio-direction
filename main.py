@@ -25,10 +25,6 @@ def get_virtual_cable_index():
 
 
 def main():
-    audio_slicer.CHUNK = CHUNK
-    audio_slicer.FORMAT = FORMAT
-    audio_slicer.RATE = RATE
-
     with wave.open("output.wav", "wb") as wf:
         wf.setnchannels(1)
         wf.setsampwidth(sampwidth=pyaudio.get_sample_size(format=FORMAT))
