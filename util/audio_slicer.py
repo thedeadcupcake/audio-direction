@@ -10,9 +10,9 @@ onset = aubio.onset("default", 2048, 1024, 44100)
 onset_L = aubio.onset("default", 1024, 512, 44100)
 onset_R = aubio.onset("default", 1024, 512, 44100)
 
-onset.set_threshold(0.3)
-onset_L.set_threshold(0.3)
-onset_R.set_threshold(0.3)
+onset.set_threshold(0.1)
+onset_L.set_threshold(0.2)
+onset_R.set_threshold(0.2)
 
 def segment_log(min: int, max: int, segments: int):
     log_min = math.log10(min)
