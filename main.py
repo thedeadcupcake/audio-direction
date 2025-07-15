@@ -1,6 +1,5 @@
 import pyaudio 
 import numpy as np
-import wave
 
 from util import audio_slicer
 
@@ -25,11 +24,6 @@ def get_virtual_cable_index():
 
 
 def main():
-    with wave.open("output.wav", "wb") as wf:
-        wf.setnchannels(1)
-        wf.setsampwidth(sampwidth=pyaudio.get_sample_size(format=FORMAT))
-        wf.setframerate(RATE)
-        
         print("Recording...")
 
         stream = pya.open(rate=RATE, channels=CHANNELS, format=FORMAT, input_device_index=get_virtual_cable_index(), input=True, frames_per_buffer=CHUNK)
@@ -46,12 +40,7 @@ def main():
                 peakL, peakR = audio_slicer.get_peak_LR_balance(samples)
                 audio_slicer.get_timestamp_LR_balance(samples, current_timestamp, onset_timestamp/2) # onset timestamp will be double the actual due to 2 channel input
 
-                audio_slicer.print_balance(audio_slicer.get_balance(peakL, peakR))
-
-            LR = audio_slicer.split_LR_channels(samples)
-            
-            #wf.writeframes(data=LR[0])
-    
+                audio_slicer.print_balance(audio_slicer.get_balance(peakL, peakR))   
 
         print("Finished")
 
